@@ -23,7 +23,7 @@ app.post('/users', async (req, res) => {
         let db = connection.db('mvg');
         let user = await db.collection('register').findOne({ email: req.body.email })
         if (user) {
-            res.json({ message: "already have" })
+            res.json({"already have" })
         } else {
             let collection = await db.collection('register').insertOne(req.body)
             res.json({ message: "submit" })
