@@ -13,7 +13,7 @@ app.use(express.json());
 
 
 app.use(cors({
-    origin:("https://mvg-from-registation.onrender.com","*")
+    origin: ("https://mvg-from-registation.onrender.com", "*")
 }));
 
 
@@ -29,10 +29,18 @@ app.post('/users', async (req, res) => {
             res.json({ message: "Successfully Submitted" })
         }
         let close = await connection.close()
-        res.json({message:"Success"})
+        res.json({ message: "Success" })
     } catch (error) {
         console.log(error);
     }
+})
+
+app.get('/fullUsers', async (req, res) => {
+    let connection = await mongoClient.connect(url);
+    let db = connection.db('mvg');
+    let user = await db.collection('register').find({}).toArray()
+    let close = await connection.close()
+    res.json(user)
 })
 
 
