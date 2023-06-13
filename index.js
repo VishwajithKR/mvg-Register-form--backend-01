@@ -35,10 +35,28 @@ app.post('/users', async (req, res) => {
     }
 })
 
+app.post('/user', async (req, res) => {
+    try {
+        let connection = await mongoClient.connect(url);
+        let db = connection.db('mvg');
+        let user = await db.collection('sample').findOne({ email: req.body.email })
+        if (user) {
+            res.json({ message: "This Email Already Exist" })
+        } else {
+            let collection = await db.collection('register').insertOne(req.body)
+            res.json({ message: "Successfully Submitted" })
+        }
+        let close = await connection.close()
+        res.json({ message: "Success" })
+    } catch (error) {
+        console.log(error);
+    }
+})
+
 app.get('/fullUsers', async (req, res) => {
     let connection = await mongoClient.connect(url);
     let db = connection.db('mvg');
-    let user = await db.collection('register').find({}).toArray()
+    let user = await db.collection('offer').find({}).toArray()
     let close = await connection.close()
     res.json(user)
 })
