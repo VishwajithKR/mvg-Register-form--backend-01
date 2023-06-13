@@ -43,7 +43,7 @@ app.post('/user', async (req, res) => {
         if (user) {
             res.json({ message: "This Email Already Exist" })
         } else {
-            let collection = await db.collection('register').insertOne(req.body)
+            let collection = await db.collection('sample').insertOne(req.body)
             res.json({ message: "Successfully Submitted" })
         }
         let close = await connection.close()
