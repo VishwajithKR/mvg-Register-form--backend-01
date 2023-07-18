@@ -56,15 +56,39 @@ app.post('/user', async (req, res) => {
 app.get('/fullUsers', async (req, res) => {
     let connection = await mongoClient.connect(url);
     let db = connection.db('mvg');
-    let user = await db.collection('offer').find({}).toArray()
+    let user = await db.collection('register').find({}).toArray()
     let close = await connection.close()
-    res.json(user)
+    res.json(user);
 })
 
+app.post('/sendVideos', async (req, res) => {
+    try {
+        let connection = await mongoClient.connect(url);
+        let db = connection.db('mvg');
+        let collection = await db.collection('videos').insertOne(req.body)
+        let close = await connection.close()
+        res.json({ message: "Successfully Submitted" })
+    } catch (error) {
+        console.log(error)
+    }
+
+})
+
+
+
+app.get('/videos', async (req, res) => {
+    let connection = await mongoClient.connect(url);
+    let db = connection.db('mvg');
+    let user = await db.collection('videos').find({}).toArray()
+    let close = await connection.close()
+    res.json(user);
+})
 
 app.listen(3088, () => {
     console.log("server is started in 3088")
 })
+
+
 
 
 
